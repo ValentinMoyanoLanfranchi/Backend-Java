@@ -1,0 +1,54 @@
+CREATE SCHEMA IF NOT EXISTS backend;
+SET SCHEMA backend;
+
+CREATE TABLE IF NOT EXISTS backend.users
+(
+    ID   INT AUTO_INCREMENT NOT NULL,
+    NAME VARCHAR(255)       NOT NULL,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE IF NOT EXISTS backend.repository
+(
+    ID              INT AUTO_INCREMENT NOT NULL,
+    OWNER_ID        INT,
+    REPOSITORY_NAME VARCHAR(255)       NOT NULL,
+    DESCRIPTION     VARCHAR(500),
+    LAST_UPDATE     TIMESTAMP,
+    URL             VARCHAR(255)       NOT NULL,
+    STARS           REAL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (OWNER_ID) REFERENCES backend.users (ID)
+);
+
+CREATE TABLE IF NOT EXISTS backend.language
+(
+    ID   INT AUTO_INCREMENT NOT NULL,
+    NAME VARCHAR(255)       NOT NULL,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE IF NOT EXISTS backend.language_repository
+(
+    ID_LANGUAGE   INT,
+    ID_REPOSITORY INT,
+    PRIMARY KEY (ID_LANGUAGE, ID_REPOSITORY),
+    FOREIGN KEY (ID_LANGUAGE) REFERENCES backend.language (ID),
+    FOREIGN KEY (ID_REPOSITORY) REFERENCES backend.repository (ID)
+);
+
+CREATE TABLE IF NOT EXISTS backend.tag
+(
+    ID            INT AUTO_INCREMENT NOT NULL,
+    NAME          VARCHAR(255)       NOT NULL,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE IF NOT EXISTS backend.tag_repository
+(
+    ID_TAG        INT,
+    ID_REPOSITORY INT,
+    PRIMARY KEY (ID_TAG, ID_REPOSITORY),
+    FOREIGN KEY (ID_TAG) REFERENCES backend.tag (ID),
+    FOREIGN KEY (ID_REPOSITORY) REFERENCES backend.repository (ID)
+);
